@@ -3,6 +3,7 @@ package com.androiddevs.mvvmnewsapp.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.androiddevs.mvvmnewsapp.models.Article
 import com.androiddevs.mvvmnewsapp.models.NewsResponse
 import com.androiddevs.mvvmnewsapp.repository.NewsRepository
 import com.androiddevs.mvvmnewsapp.util.Resource
@@ -22,18 +23,27 @@ class NewsViewModel(
         getBreakingNews("ru")
     }
 
-    private fun getBreakingNews(countryCode: String) = viewModelScope.launch {
-        breakingNews.postValue(Resource.Loading())
-        val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
-        breakingNews.postValue(handleBreakingNewsResponse(response))
-    }
-
     fun searchNews(searchQuery: String) = viewModelScope.launch {
         searchNews.postValue(Resource.Loading())
         val response = newsRepository.searchNewws(searchQuery, searchNewsPage)
         searchNews.postValue(handleSearchNewResponse(response))
     }
 
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        newsRepository.upsert(article)
+    }
+
+    fun getSavedNews() = newsRepository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
+
+    private fun getBreakingNews(countryCode: String) = viewModelScope.launch {
+        breakingNews.postValue(Resource.Loading())
+        val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
+        breakingNews.postValue(handleBreakingNewsResponse(response))
+    }
 
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if(response.isSuccessful) {

@@ -13,8 +13,8 @@ data class Article(
         autoGenerate = true
     )
     var id: Int? = null,
-    val author: String,
-    val content: String,
+    val author: String? = "No author",
+    val content: String? = "Empty",
     val description: String,
     val publishedAt: String,
     val source: Source,
