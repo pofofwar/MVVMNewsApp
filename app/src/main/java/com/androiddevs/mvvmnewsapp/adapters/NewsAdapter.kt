@@ -1,5 +1,6 @@
 package com.androiddevs.mvvmnewsapp.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             tvDescription.text = article.description
             tvPublishedAt.text = article.publishedAt
             setOnClickListener {
-                onItemClickListener?.let { article }
+                onItemClickListener?.let { it(article) }
             }
         }
     }
